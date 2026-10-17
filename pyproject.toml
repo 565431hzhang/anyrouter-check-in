@@ -1,0 +1,9 @@
+[project]
+name = "anyrouter-check-in"
+version = "0.1.0"
+description = "AnyRouter / NewAPI 自动签到（GitHub Actions 专用）"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx[http2]>=0.24.0",
+  "cloakbrowser>=0.3.0",
+]
