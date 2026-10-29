@@ -1,7 +1,7 @@
 name: AnyRouter 自动签到
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 19 * * *'
   workflow_dispatch:
     inputs:
       debug:
@@ -14,6 +14,9 @@ jobs:
   checkin:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: read
+      actions: write   # 清理历史运行与 artifacts 需要
     env:
       PYTHONIOENCODING: utf-8
       PYTHONUNBUFFERED: 1
@@ -141,3 +144,10 @@ jobs:
           echo "调试截图已上传为 artifact: checkin-screenshots-${{ github.run_id }}"
           ls -la checkin_screenshots/
         fi
+
+    - name: 清理历史运行与 Artifacts
+      if: always()
+      continue-on-error: true
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: bash scripts/cleanup_runs.sh
